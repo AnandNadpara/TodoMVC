@@ -50,6 +50,7 @@ const inputDebounce = debouncing(()=>popup());
 todoInputField.addEventListener("input", inputDebounce);
 
 document.querySelector(".add").addEventListener("click", ()=>{
+    if(todoInputField.value.trim())
     addNewTask(todoInputField.value.trim());
 })
 
