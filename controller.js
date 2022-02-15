@@ -16,6 +16,7 @@ function addNewTask(task) {
     });
     if (todoInputField)
         todoInputField.value = "";
+    document.querySelector(".popup").style.display = "none";
     render(todo.getTodo(), todo.getState(), todo.itemsActive());
 }
 todoInputField === null || todoInputField === void 0 ? void 0 : todoInputField.addEventListener("keydown", (e) => {
