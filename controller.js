@@ -14,21 +14,21 @@ function addNewTask(task) {
         task: task,
         status: false,
     });
-    if (todoInputField)
-        todoInputField.value = "";
-    document.querySelector(".popup").style.display = "none";
+    todoInputField.value = "";
+    let popup = document.querySelector(".popup");
+    popup.style.display = "none";
     render(todo.getTodo(), todo.getState(), todo.itemsActive());
 }
-todoInputField === null || todoInputField === void 0 ? void 0 : todoInputField.addEventListener("keydown", (e) => {
-    if (e.keyCode === 13 && e.target.value.trim()) {
-        addNewTask(e.target.value.trim());
+todoInputField.addEventListener("keydown", (e) => {
+    if (e && e.keyCode === 13 && todoInputField.value.trim()) {
+        addNewTask(todoInputField.value.trim());
     }
 });
 function debouncing(func, timeout = 300) {
     let timer;
     return (...args) => {
         clearTimeout(timer);
-        timer = setTimeout(() => { func.apply(this, args); }, timeout);
+        timer = setTimeout(() => { func.apply(args); }, timeout);
     };
 }
 function popup() {
@@ -43,13 +43,14 @@ function popup() {
 }
 const inputDebounce = debouncing(() => popup());
 todoInputField.addEventListener("input", inputDebounce);
-document.querySelector(".add").addEventListener("click", () => {
-    if(todoInputField.value.trim())
-    addNewTask(todoInputField.value.trim());
+let addButton = document.querySelector(".add");
+addButton.addEventListener("click", () => {
+    if (todoInputField.value.trim())
+        addNewTask(todoInputField.value.trim());
 });
 let todoList = document.querySelector(".todoList");
 function checkedToggle(e) {
-    todo.changeState((e.target.parentNode.id).slice(4));
+    todo.changeState(e.target.parentNode.id.slice(4));
     changeStyle(e.target.parentNode.id, todo.itemsActive());
 }
 todoList.addEventListener("change", (e) => { checkedToggle(e); });
@@ -61,15 +62,15 @@ todoList.addEventListener("click", (e) => {
     else if (e.target.nodeName === "P") {
         e.target.parentNode.querySelector(".toggle").checked = !e.target.parentNode.querySelector(".toggle").checked;
         checkedToggle(e);
-        // render(todo.getTodo, todo.itemsActive());
     }
 });
 let footer = document.querySelector("footer");
 footer.addEventListener("click", (e) => {
+    var _a, _b;
     if (e.target.nodeName === "A") {
-        document.querySelector("." + todo.getState().toLowerCase()).classList.toggle("selected");
+        (_a = document.querySelector("." + todo.getState().toLowerCase())) === null || _a === void 0 ? void 0 : _a.classList.toggle("selected");
         todo.filterState(e.target.textContent);
-        document.querySelector("." + todo.getState().toLowerCase()).classList.toggle("selected");
+        (_b = document.querySelector("." + todo.getState().toLowerCase())) === null || _b === void 0 ? void 0 : _b.classList.toggle("selected");
         render(todo.getTodo(), todo.getState(), todo.itemsActive());
     }
     else if (e.target.nodeName === "BUTTON") {
